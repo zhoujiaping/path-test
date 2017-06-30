@@ -3,9 +3,15 @@ package cn.zhou.path.vo;
 import java.util.List;
 
 public class Tree<T>{
+	private Long parentId;
     private T parent;
     private List<T> children;
-    
+    public Long getParentId() {
+		return parentId;
+	}
+    public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
     public T getParent() {
         return parent;
     }

@@ -163,8 +163,18 @@ public class PathNodeService {
                     children.add(subNode);
                 }
                 subNodes = new LinkedList<>();
+                subNodes.addFirst(node);
+            }else{
+            	subNodes.addFirst(node);
             }
-            subNodes.addFirst(node);
+        }
+        if(subNodes!=null){
+        	PathNode subNode = toTreeInternal(subNodes);
+            subNode.setParent(root);
+            children.add(subNode);
+        }
+        for(PathNode child:children){
+        	child.setParentId(child.getParent().getId());
         }
         return root;
     }

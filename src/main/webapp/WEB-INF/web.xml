@@ -8,7 +8,7 @@
 	</welcome-file-list>
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>path-cn.zhou.path</param-value>
+		<param-value>path-test</param-value>
 	</context-param>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
