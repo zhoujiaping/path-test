@@ -85,8 +85,7 @@ public class PathNodeService {
     }
 
     /** 获取后代节点 */
-    public List<PathNode> offspring(long id) {
-        PathNode node = mapper.selectByPrimaryKey(id);
+    public List<PathNode> offspring(PathNode node) {
         String path = node.getPath();
         PathNodeExample example = new PathNodeExample();
         example.createCriteria().andPathLike(path + PathConst.PREFIX + "%");
@@ -145,11 +144,11 @@ public class PathNodeService {
     public PathNode toTree(List<PathNode> nodes) {
         Assert.isTrue(!nodes.isEmpty(), "nodes should not be empty");
         LinkedList<PathNode> dest = new LinkedList<>();
-        Collections.copy(dest, nodes);
+        dest.addAll(nodes);
         dest.sort((o1, o2) -> o2.getPath().compareTo(o1.getPath()));//按字母逆序排序
         return toTreeInternal(dest);
     }
-
+    //一个很小的风险，树的层数太深，导致递归调用栈溢出。通过将递归转成循环+栈可以解决。
     private PathNode toTreeInternal(LinkedList<PathNode> nodes) {
         PathNode root = nodes.removeLast();
         List<PathNode> children = new ArrayList<>();
@@ -168,5 +167,24 @@ public class PathNodeService {
             subNodes.addFirst(node);
         }
         return root;
+    }
+
+    public PathNode queryTree(Long rootId) {
+        PathNode node = null;
+        if(rootId==null){
+            node = queryRootPathNode();
+        }else{
+            node = mapper.selectByPrimaryKey(rootId);
+        }
+        List<PathNode> list = offspring(node);
+        list.add(node);
+        return toTree(list);
+    }
+    public PathNode queryRootPathNode(){
+        PathNodeExample example = new PathNodeExample();
+        example.createCriteria().andPathEqualTo("");
+        List<PathNode> list = mapper.selectByExample(example);
+        Assert.isTrue(list.size()==1,"root path node not found");
+        return list.get(0);
     }
 }
