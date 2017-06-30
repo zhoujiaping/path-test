@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test.mapper.PathNodeMapper">
+  <resultMap id="BaseResultMap" type="test.model.PathNode">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+  </resultMap>
+  <update id="moveNode" parameterType="map">
+  	update path_node 
+  	set path = concat(newParentPath,left(length(newParentPath))) 
+  	where path like #{node.path}||'%'
+  </update>
+</mapper>

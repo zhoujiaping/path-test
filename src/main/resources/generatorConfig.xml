@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="C:\Users\dell\.m2\repository\postgresql\postgresql\8.3-606.jdbc4\postgresql-8.3-606.jdbc4.jar" />
+	<context id="context1" targetRuntime="MyBatis3">
+		<jdbcConnection driverClass="org.postgresql.Driver"
+			connectionURL="jdbc:postgresql://localhost:5432/test" userId="postgres"
+			password="123456" />
+		<javaModelGenerator targetPackage="model"
+			targetProject="D:\mybatis" />
+		<sqlMapGenerator targetPackage="mapper.xml"
+			targetProject="D:\mybatis" />
+		<javaClientGenerator targetPackage="mapper"
+			targetProject="D:\mybatis" type="XMLMAPPER" />
+		<table tableName="path_node" domainObjectName="PathNode"
+			enableCountByExample="true" enableDeleteByExample="true"
+			enableDeleteByPrimaryKey="true" enableInsert="true"
+			enableSelectByExample="true" enableSelectByPrimaryKey="true"
+			enableUpdateByExample="true" enableUpdateByPrimaryKey="true" />
+	</context>
+</generatorConfiguration>
