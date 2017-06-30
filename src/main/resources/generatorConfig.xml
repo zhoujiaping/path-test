@@ -5,7 +5,7 @@
 		location="C:\Users\dell\.m2\repository\postgresql\postgresql\8.3-606.jdbc4\postgresql-8.3-606.jdbc4.jar" />
 	<context id="context1" targetRuntime="MyBatis3">
 		<jdbcConnection driverClass="org.postgresql.Driver"
-			connectionURL="jdbc:postgresql://localhost:5432/test" userId="postgres"
+			connectionURL="jdbc:postgresql://localhost:5432/cn.zhou.path" userId="postgres"
 			password="123456" />
 		<javaModelGenerator targetPackage="model"
 			targetProject="D:\mybatis" />

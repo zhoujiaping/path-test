@@ -1,0 +1,11 @@
+$(()=>{
+	$('#submit').click(evt=>{
+		$.post('path-nodes',param.serializeObj({
+			name:$('input[name="name"]').val(),
+			pid:$('input[name="pid"]').val(),
+			seq:$('input[name="seq"]').val()
+		}),null,'json').done(res=>{
+			console.info(res);
+		});
+	});
+});

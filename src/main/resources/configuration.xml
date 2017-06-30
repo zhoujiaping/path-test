@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<settings>
+	<!-- <settings>
 		<setting name="cacheEnabled" value="true" />
 		<setting name="lazyLoadingEnabled" value="true" />
 		<setting name="multipleResultSetsEnabled" value="true" />
@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="useGeneratedKeys" value="false" />
 		<setting name="defaultExecutorType" value="SIMPLE" />
 		<setting name="defaultStatementTimeout" value="25000" />
-	</settings>
+	</settings> -->
 	<typeAliases>
 	</typeAliases>
 	<plugins>
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- <plugin interceptor="cn.howso.framework.mybatis.StatementHandlerPlugin"> 
 			<property name="someProperty" value="100" /> </plugin> -->
 	</plugins>
-	<environments default="development">
+	<!-- <environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
@@ -34,8 +34,5 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 				<property name="password" value="123456" />
 			</dataSource>
 		</environment>
-	</environments>
-	<mappers>
-		<mapper resource="mybatis/PathNodeMapper.xml" />
-	</mappers>
+	</environments> -->
 </configuration>
