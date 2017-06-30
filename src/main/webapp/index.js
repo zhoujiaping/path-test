@@ -9,18 +9,19 @@ $(()=>{
 		});
 	});
 	$.get('path-nodes',{},null,'json').done(res=>{
-		function addToList(list,trees){
-			if(!trees || trees.length==0){
+		// 使用了尾递归优化，否则栈溢出。逐层将节点添加到集合
+		function addToList(list,children){
+			if(!children || children.length==0){
 				return;
 			}
-			var nextLevelTrees = [];
-			trees.forEach((item,index,array)=>{
+			var nextLevelChildren = [];
+			children.forEach((item,index,array)=>{
 				list.push(item);
 				if(item.children&&item.children.length>0){
-					nextLevelTrees = nextLevelTrees.concat(item.children);
+					nextLevelChildren = nextLevelChildren.concat(item.children);
 				}
 			});
-			addToList(list,nextLevelTrees);
+			addToList(list,nextLevelChildren);
 		}
 		const list = [res];
 		addToList(list,res.children);
@@ -28,7 +29,7 @@ $(()=>{
 			item.text=item.name;
 			item.name;
 			item._id = item.id;
-			delete item.id;//jstree接收对象有id会显示loading...
+			delete item.id;// jstree接收对象有id时，会一直显示loading...
 		});
 		
 		$('#tree').jstree({
@@ -36,15 +37,5 @@ $(()=>{
 				'data' :[res]
 			}
 		});
-/*		$('#tree').jstree({
-			'core' : {
-				'data' : [
-				          { "text" : "Root node", "children" : [
-				                                                { "text" : "Child node 1" },
-				                                                { "text" : "Child node 2" }
-				                                                ]}
-				          ]
-			}
-		});
-*/	});
+	});
 });

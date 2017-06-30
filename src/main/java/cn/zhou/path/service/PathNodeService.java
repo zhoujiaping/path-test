@@ -3,7 +3,6 @@ package cn.zhou.path.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -146,11 +145,26 @@ public class PathNodeService {
         LinkedList<PathNode> dest = new LinkedList<>();
         dest.addAll(nodes);
         dest.sort((o1, o2) -> o2.getPath().compareTo(o1.getPath()));//按字母逆序排序
-        return toTreeInternal(dest);
+        return toTreeInternal2(dest);
     }
     //一个很小的风险，树的层数太深，导致递归调用栈溢出。通过将递归转成循环+栈可以解决。
+    /**
+     * 参数nodes是一颗树的节点列表，已经根据path逆序排序。
+     * 例如
+     * -003
+     * -002-002
+     * -002-001
+     * -001-002
+     * -001-001-001
+     * -001-001
+     * -000
+     * ''
+     * 算法是使用递归，假设该节点的各个子树都已生成，那么树就容易生成。生成子树，需要先把某个子树的所有节点收集起来。
+     * */
     private PathNode toTreeInternal(LinkedList<PathNode> nodes) {
+    	//树的根节点
         PathNode root = nodes.removeLast();
+        //子树集合
         List<PathNode> children = new ArrayList<>();
         root.setChildren(children);
         LinkedList<PathNode> subNodes = null;
@@ -178,7 +192,37 @@ public class PathNodeService {
         }
         return root;
     }
-
+    /**这里用linkedList好些，因为数据量大些时，也不会出现频繁拷贝数组的情况*/
+    private PathNode toTreeInternal2(LinkedList<PathNode> nodes) {
+    	//树的根节点
+        PathNode root = nodes.removeLast();
+        List<PathNode> children = new ArrayList<>();
+        root.setChildren(children);
+        //节点按子树分组
+        LinkedList<LinkedList<PathNode>> subTreesNodeList = new LinkedList<>();
+        LinkedList<PathNode> subTreeNodeList;
+        while(!nodes.isEmpty()){//每一次循环收集一颗子树的所有节点到一个新的集合
+        	PathNode node = nodes.removeLast();
+        	subTreeNodeList = new LinkedList<>();//某个子树所有的节点
+        	subTreesNodeList.add(subTreeNodeList);
+        	subTreeNodeList.addFirst(node);
+        	while(!nodes.isEmpty()){
+        		PathNode last = nodes.getLast();
+        		if( last.getPath().length()>root.getPath().length()+PathConst.PREFIX.length()+PathConst.LEN){
+        			subTreeNodeList.addFirst(nodes.removeLast());
+        		}else{
+        			break;
+        		}
+        	}
+        }
+        for(LinkedList<PathNode> item:subTreesNodeList){//递归调用，设置关联
+        	PathNode subNode = toTreeInternal2(item);
+        	subNode.setParent(root);
+        	subNode.setParentId(root.getId());
+        	children.add(subNode);
+        }
+        return root;
+    }
     public PathNode queryTree(Long rootId) {
         PathNode node = null;
         if(rootId==null){
