@@ -2,6 +2,7 @@ package cn.zhou.path.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -102,7 +103,7 @@ public class PathNodeService {
         // 不过如果用到stream，没有并行，都要花44毫秒左右。所以stream启动成本高，比较适合用在需要并行计算的地方。
         // 因为pg的事务隔离级别默认为read commited，所以在并发情况下，该机制可能导致失败。
         // 数据库最好加给path字段加约束，保证数据的正确性。
-
+        //可以使用bitmap，进一步提升性能和可读性。
         // long start = System.currentTimeMillis();
         if (children.size() + count >= PathConst.MAX) {
             throw new RuntimeException("too much children");
@@ -124,6 +125,27 @@ public class PathNodeService {
         }
         // long end = System.currentTimeMillis();
         // System.out.println("time cost = "+(end-start));
+        return paths;
+    }
+    /**bitmap版本*/
+    private List<String> uniquePath2(String parentPath, Collection<PathNode> children, int count) {
+        if (children.size() + count >= PathConst.MAX) {
+            throw new RuntimeException("too much children");
+        }
+        BitSet bitmap = new BitSet();
+        for(PathNode node:children){
+            bitmap.set(Integer.parseInt(node.getPath().substring(parentPath.length()-PathConst.PREFIX.length()), PathConst.RADIX));
+        }
+        List<String> paths = new ArrayList<>(count);
+        for(int i=0;i<PathConst.MAX;i++){
+            if(paths.size()<count){
+                String path = Integer.toString(i, PathConst.RADIX);
+                path = PathConst.PREFIX + PathConst.TEMPLATE.substring(path.length()) + path;
+                paths.add(path);
+            }else{
+                break;
+            }
+        }
         return paths;
     }
 
