@@ -14,7 +14,6 @@ create table t_industry (
 );
 -- 初始化根路径
 insert into t_industry(path,name)values('','行业');
- * @author 01375156
  *
  * @param <T>
  */
