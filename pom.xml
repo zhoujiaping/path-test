@@ -120,11 +120,6 @@
 			<version>1.7.5</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.howso</groupId>
-			<artifactId>mybatis-mapper</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
 			<version>2.6.0</version>
